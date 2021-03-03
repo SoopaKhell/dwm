@@ -1,0 +1,6 @@
+# dwm
+
+Patches:
+
+- swallow
+- fullgaps
