@@ -1,5 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/XF86keysym.h>
+
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -13,7 +15,7 @@ static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char col_cyan[]        = "#AD9944";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -33,6 +35,7 @@ static const Rule rules[] = {
 	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
 	/* class     instance     title       tags mask     isfloating   isterminal		noswallow  monitor */
 	{ "st",      NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "urxvt",   NULL,     NULL,           0,         0,          1,           0,        -1 },
 };
 
 /* layout(s) */
@@ -43,7 +46,7 @@ static const int resizehints = 0;    /* 1 means respect size hints in tiled resi
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
+	//{ "><>",      NULL },    /* no layout function means floating behavior */
 	{ "[M]",      monocle },
 };
 
@@ -60,6 +63,7 @@ static const Layout layouts[] = {
 
 /* commands */
 //static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
+
 static const char *dmenucmd[] = { "rofi", "-show", "run", NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *browsercmd[]  = { "brave", NULL };
@@ -67,49 +71,51 @@ static const char *todocmd[] = {"st", "-e", "nvim", "/home/carter/Documents/md/t
 static const char *muttcmd[] = {"st", "-e", "mutt"};
 static const char *classmenucmd[] = {"classmenu"};
 static const char *actionmenucmd[] = {"actionmenu"};
-static const char *textbookcmd[] = {"/home/carter/Code/textbooks"};
-
+static const char *textbookcmd[] = {"/home/carter/Code/textbooks"}; 
 //XK_End
 
 static Key keys[] = {
-	/* modifier                     key        function        argument */
-	{ MODKEY,                       XK_d,      spawn,          {.v = dmenucmd } },
-	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_i,      spawn,          {.v = browsercmd } },
-	{ MODKEY,						XK_o,      spawn,          {.v = todocmd } },
-	{ MODKEY,						XK_n,      spawn,          {.v = muttcmd } },
-	{ NULL,				         	XK_Prior,     spawn,          {.v = classmenucmd } },
-	{ NULL,				         	XK_End,     spawn,          {.v = textbookcmd } },
-	{ MODKEY,				         	XK_semicolon,  spawn,          {.v = actionmenucmd } },
-	{ MODKEY,                       XK_b,      togglebar,      {0} },
-	{ MODKEY,                       XK_w,      killclient,     {0} },
-	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
-	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
-	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-	{ MODKEY,                       XK_e,      zoom,           {0} },
-	{ MODKEY,                       XK_Tab,    view,           {0} },
-	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-	//{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
-	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[2]} },
-	{ MODKEY,                       XK_space,  setlayout,      {0} },
-	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
-	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-	TAGKEYS(                        XK_1,                      0)
-	TAGKEYS(                        XK_2,                      1)
-	TAGKEYS(                        XK_3,                      2)
-	TAGKEYS(                        XK_4,                      3)
-	TAGKEYS(                        XK_5,                      4)
-	TAGKEYS(                        XK_6,                      5)
-	TAGKEYS(                        XK_7,                      6)
-	TAGKEYS(                        XK_8,                      7)
-	TAGKEYS(                        XK_9,                      8)
-	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+	/* modifier                     key                         function        argument */
+	{ NULL,                         XF86XK_AudioRaiseVolume,    spawn,          SHCMD("amixer set Master 3%+") },
+	{ NULL,                         XF86XK_AudioLowerVolume,    spawn,          SHCMD("amixer set Master 3%-") },
+	{ NULL,                         XF86XK_AudioMute,           spawn,          SHCMD("amixer set Master 0")   },
+	{ MODKEY,                       XK_d,                       spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_Return,                  spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_i,                       spawn,          {.v = browsercmd } },
+	{ MODKEY,						XK_o,                       spawn,          {.v = todocmd } },
+	{ MODKEY,						XK_n,                       spawn,          {.v = muttcmd } },
+	{ NULL,				         	XK_Prior,                   spawn,          {.v = classmenucmd } },
+	{ NULL,				         	XK_End,                     spawn,          {.v = textbookcmd } },
+	{ NULL,				         	XK_Print,                   spawn,          SHCMD("$HOME/.local/bin/shot") },
+	{ MODKEY,				        XK_semicolon,               spawn,          {.v = actionmenucmd } },
+	{ MODKEY,                       XK_b,                       togglebar,      {0} },
+	{ MODKEY,                       XK_w,                       killclient,     {0} },
+	{ MODKEY,                       XK_j,                       focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_k,                       focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_h,                       setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_l,                       setmfact,       {.f = +0.05} },
+	{ MODKEY,                       XK_e,                       zoom,           {0} },
+	{ MODKEY,                       XK_Tab,                     view,           {0} },
+	{ MODKEY,                       XK_t,                       setlayout,      {.v = &layouts[0]} },
+	//{ MODKEY,                       XK_f,                       setlayout,    {.v = &layouts[1]} },
+	//{ MODKEY,                       XK_f,                       setlayout,    {.v = &layouts[2]} },
+	{ MODKEY,                       XK_f,                       setlayout,      {0} },
+	{ MODKEY,                       XK_0,                       view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,                       tag,            {.ui = ~0 } },
+	{ MODKEY,                       XK_comma,                   focusmon,       {.i = -1 } },
+	{ MODKEY,                       XK_period,                  focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_comma,                   tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period,                  tagmon,         {.i = +1 } },
+	TAGKEYS(                        XK_1,                       0)
+	TAGKEYS(                        XK_2,                       1)
+	TAGKEYS(                        XK_3,                       2)
+	TAGKEYS(                        XK_4,                       3)
+	TAGKEYS(                        XK_5,                       4)
+	TAGKEYS(                        XK_6,                       5)
+	TAGKEYS(                        XK_7,                       6)
+	TAGKEYS(                        XK_8,                       7)
+	TAGKEYS(                        XK_9,                       8)
+	{ MODKEY|ShiftMask,             XK_q,                       quit,           {0} },
 };
 
 /* button definitions */
@@ -128,4 +134,3 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 };
-
