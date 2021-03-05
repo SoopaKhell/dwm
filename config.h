@@ -83,7 +83,7 @@ static Key keys[] = {
 	{ MODKEY,                       XK_Return,                  spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_i,                       spawn,          {.v = browsercmd } },
 	{ MODKEY,						XK_o,                       spawn,          {.v = todocmd } },
-	{ MODKEY,						XK_n,                       spawn,          {.v = muttcmd } },
+	{ MODKEY,						XK_m,                       spawn,          {.v = muttcmd } },
 	{ NULL,				         	XK_Prior,                   spawn,          {.v = classmenucmd } },
 	{ NULL,				         	XK_End,                     spawn,          {.v = textbookcmd } },
 	{ NULL,				         	XK_Print,                   spawn,          SHCMD("$HOME/.local/bin/shot") },
