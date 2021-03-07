@@ -240,6 +240,7 @@ static void updatetitle(Client *c);
 static void updatewindowtype(Client *c);
 static void updatewmhints(Client *c);
 static void view(const Arg *arg);
+static void view_adjacent(const Arg *arg);
 static Client *wintoclient(Window w);
 static Monitor *wintomon(Window w);
 static int xerror(Display *dpy, XErrorEvent *ee);
@@ -341,6 +342,10 @@ applysizehints(Client *c, int *x, int *y, int *w, int *h, int interact)
 {
 	int baseismin;
 	Monitor *m = c->mon;
+
+	// return 1 if layout is monocle
+	if (&monocle == c->mon->lt[c->mon->sellt]->arrange)
+		return 1;
 
 	/* set minimum possible */
 	*w = MAX(1, *w);
@@ -1364,6 +1369,11 @@ resizeclient(Client *c, int x, int y, int w, int h)
 	c->oldw = c->w; c->w = wc.width = w;
 	c->oldh = c->h; c->h = wc.height = h;
 	wc.border_width = c->bw;
+	if ((&monocle == c->mon->lt[c->mon->sellt]->arrange) && (!c->isfloating)) {
+		wc.border_width = 0;
+		c->w = wc.width += c->bw * 2;
+		c->h = wc.height += c->bw * 2;
+	}
 	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
 	configure(c);
 	XSync(dpy, False);
@@ -1837,6 +1847,7 @@ toggleview(const Arg *arg)
 	}
 }
 
+
 void
 unfocus(Client *c, int setfocus)
 {
@@ -2152,6 +2163,42 @@ view(const Arg *arg)
 	arrange(selmon);
 }
 
+void
+view_adjacent(const Arg *arg)
+{
+	int i, curtags;
+	int seltag = 0;
+	Arg a;
+
+	curtags = selmon->tagset[selmon->seltags];
+	for(i = 0; i < LENGTH(tags); i++)
+		if(curtags & (1 << i)){
+			seltag = i;
+			break;
+		}
+
+	seltag = (seltag + arg->i) % (int)LENGTH(tags);
+	if(seltag < 0)
+		seltag += LENGTH(tags);
+
+	a.i = (1 << seltag);
+	view(&a);
+}
+
+void
+shiftview(const Arg *arg) {
+	Arg shifted;
+
+	if(arg->i > 0) // left circular shift
+		shifted.ui = (selmon->tagset[selmon->seltags] << arg->i)
+		   | (selmon->tagset[selmon->seltags] >> (LENGTH(tags) - arg->i));
+
+	else // right circular shift
+		shifted.ui = selmon->tagset[selmon->seltags] >> (- arg->i)
+		   | selmon->tagset[selmon->seltags] << (LENGTH(tags) + arg->i);
+
+	view(&shifted);
+}
 
 pid_t
 winpid(Window w)

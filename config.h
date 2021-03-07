@@ -36,6 +36,7 @@ static const Rule rules[] = {
 	/* class     instance     title       tags mask     isfloating   isterminal		noswallow  monitor */
 	{ "st",      NULL,     NULL,           0,         0,          1,           0,        -1 },
 	{ "URxvt",   NULL,     NULL,           0,         0,          1,           0,        -1 },
+	{ "xev",   NULL,     NULL,           0,         0,          0,           1,        -1 },
 };
 
 /* layout(s) */
@@ -93,7 +94,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_comma,                   focusmon,       {.i = -1 } },
 	{ MODKEY,                       XK_period,                  focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,                   tagmon,         {.i = -1 } },
-	{ MODKEY|ShiftMask,             XK_period,                  tagmon,         {.i = +1 } },
+	{ MODKEY,                       Button4,                    spawn,      SHCMD("amixer set Master 3%+") },
+	{ MODKEY,                       Button5,                    spawn,      SHCMD("amixer set Master 3%-") },
 	TAGKEYS(                        XK_1,                       0)
 	TAGKEYS(                        XK_2,                       1)
 	TAGKEYS(                        XK_3,                       2)
@@ -121,4 +123,15 @@ static Button buttons[] = {
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
 	{ ClkTagBar,            MODKEY,         Button1,        tag,            {0} },
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
+	{ ClkTagBar,            0,              Button4,        view_adjacent,  { .i = -1 } },
+	{ ClkTagBar,            0,              Button5,        view_adjacent,  { .i = +1 } },
+	{ ClkClientWin,         MODKEY,         Button4,        spawn,          SHCMD("amixer set Master 1%+") },
+	{ ClkRootWin,           MODKEY,         Button4,        spawn,          SHCMD("amixer set Master 1%+") },
+	{ ClkWinTitle,          MODKEY,         Button4,        spawn,          SHCMD("amixer set Master 1%+") },
+	{ ClkStatusText,        MODKEY,         Button4,        spawn,          SHCMD("amixer set Master 1%+") },
+
+	{ ClkClientWin,         MODKEY,         Button5,        spawn,          SHCMD("amixer set Master 1%-") },
+	{ ClkRootWin,           MODKEY,         Button5,        spawn,          SHCMD("amixer set Master 1%-") },
+	{ ClkWinTitle,          MODKEY,         Button5,        spawn,          SHCMD("amixer set Master 1%-") },
+	{ ClkStatusText,        MODKEY,         Button5,        spawn,          SHCMD("amixer set Master 1%-") },
 };
