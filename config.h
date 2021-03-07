@@ -2,6 +2,11 @@
 
 #include <X11/XF86keysym.h>
 
+#define Button6 6
+#define Button7 7
+#define Button8 8
+#define Button9 9
+
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -89,6 +94,10 @@ static Key keys[] = {
 	{ MODKEY,                       XK_e,                       zoom,           {0} },
 	{ MODKEY,                       XK_Tab,                     view,           {0} },
 	{ MODKEY,                       XK_f,                       setlayout,      {0} },
+	{ MODKEY,                       XK_f,                       togglefloating, {0} },
+	{ MODKEY,                       XK_t,                       setlayout,      {.v = &layouts[0]} },
+	{ MODKEY,                       XK_t,                       setbar,         {1} },
+	{ MODKEY,                       XK_t,                       togglefloating, {0} },
 	{ MODKEY,                       XK_0,                       view,           {.ui = ~0 } },
 	{ MODKEY|ShiftMask,             XK_0,                       tag,            {.ui = ~0 } },
 	{ MODKEY,                       XK_comma,                   focusmon,       {.i = -1 } },
@@ -116,8 +125,8 @@ static Button buttons[] = {
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
-	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
-	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
+	{ ClkClientWin,         MODKEY,         Button2,        movemouse,      {0} },
+	{ ClkClientWin,         MODKEY,         Button1,        togglefloating, {0} },
 	{ ClkClientWin,         MODKEY,         Button3,        resizemouse,    {0} },
 	{ ClkTagBar,            0,              Button1,        view,           {0} },
 	{ ClkTagBar,            0,              Button3,        toggleview,     {0} },
@@ -125,13 +134,24 @@ static Button buttons[] = {
 	{ ClkTagBar,            MODKEY,         Button3,        toggletag,      {0} },
 	{ ClkTagBar,            0,              Button4,        view_adjacent,  { .i = -1 } },
 	{ ClkTagBar,            0,              Button5,        view_adjacent,  { .i = +1 } },
+
 	{ ClkClientWin,         MODKEY,         Button4,        spawn,          SHCMD("amixer set Master 1%+") },
 	{ ClkRootWin,           MODKEY,         Button4,        spawn,          SHCMD("amixer set Master 1%+") },
 	{ ClkWinTitle,          MODKEY,         Button4,        spawn,          SHCMD("amixer set Master 1%+") },
-	{ ClkStatusText,        MODKEY,         Button4,        spawn,          SHCMD("amixer set Master 1%+") },
+	{ ClkStatusText,        0,              Button4,        spawn,          SHCMD("amixer set Master 1%+") },
 
 	{ ClkClientWin,         MODKEY,         Button5,        spawn,          SHCMD("amixer set Master 1%-") },
 	{ ClkRootWin,           MODKEY,         Button5,        spawn,          SHCMD("amixer set Master 1%-") },
 	{ ClkWinTitle,          MODKEY,         Button5,        spawn,          SHCMD("amixer set Master 1%-") },
-	{ ClkStatusText,        MODKEY,         Button5,        spawn,          SHCMD("amixer set Master 1%-") },
+	{ ClkStatusText,        0,              Button5,        spawn,          SHCMD("amixer set Master 1%-") },
+
+	{ ClkClientWin,         MODKEY,         Button9,        spawn,          SHCMD("playerctl next") },
+	{ ClkRootWin,           MODKEY,         Button9,        spawn,          SHCMD("playerctl next") },
+	{ ClkWinTitle,          MODKEY,         Button9,        spawn,          SHCMD("playerctl next") },
+	{ ClkStatusText,        MODKEY,         Button9,        spawn,          SHCMD("playerctl next") },
+
+	{ ClkClientWin,         MODKEY,         Button8,        spawn,          SHCMD("playerctl previous") },
+	{ ClkRootWin,           MODKEY,         Button8,        spawn,          SHCMD("playerctl previous") },
+	{ ClkWinTitle,          MODKEY,         Button8,        spawn,          SHCMD("playerctl previous") },
+	{ ClkStatusText,        MODKEY,         Button8,        spawn,          SHCMD("playerctl previous") },
 };
