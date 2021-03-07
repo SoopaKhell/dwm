@@ -64,7 +64,6 @@ static const Layout layouts[] = {
 /* commands */
 //static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 
-static const char *dmenucmd[] = { "rofi", "-show", "run", NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char *browsercmd[]  = { "brave", NULL };
 static const char *todocmd[] = {"st", "-e", "nvim", "/home/carter/Documents/md/todo.md"};
@@ -79,7 +78,7 @@ static Key keys[] = {
 	{ NULL,                         XF86XK_AudioRaiseVolume,    spawn,          SHCMD("amixer set Master 3%+") },
 	{ NULL,                         XF86XK_AudioLowerVolume,    spawn,          SHCMD("amixer set Master 3%-") },
 	{ NULL,                         XF86XK_AudioMute,           spawn,          SHCMD("amixer set Master 0")   },
-	{ MODKEY,                       XK_d,                       spawn,          {.v = dmenucmd } },
+	{ MODKEY,                       XK_d,                       spawn,          SHCMD("rofi -show run") },
 	{ MODKEY,                       XK_Return,                  spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_i,                       spawn,          {.v = browsercmd } },
 	{ MODKEY,						XK_o,                       spawn,          {.v = todocmd } },

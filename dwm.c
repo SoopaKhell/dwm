@@ -1601,6 +1601,7 @@ setlayout(const Arg *arg)
 		arrange(selmon);
 	else
 		drawbar(selmon);
+	togglebar(0);
 }
 
 /* arg > 1.0 will set mfact absolutely */
