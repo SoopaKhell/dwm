@@ -20,7 +20,7 @@ static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#AD9944";
+static const char col_cyan[]        = "#1FB4D1";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -84,6 +84,7 @@ static Key keys[] = {
 	{ 0,   				         	XK_Prior,                   spawn,          SHCMD("$HOME/.local/bin/latestassignment") },
 	{ 0,   				         	XK_End,                     spawn,          SHCMD("$HOME/.local/bin/textbooks") },
 	{ 0,   				         	XK_Print,                   spawn,          SHCMD("$HOME/.local/bin/shot") },
+	{ 0,   				         	XF86XK_LaunchA,             spawn,          SHCMD("$HOME/.local/bin/shot") },
 	{ MODKEY,				        XK_semicolon,               spawn,          SHCMD("$HOME/.local/bin/actionmenu") },
 	{ MODKEY,                       XK_b,                       togglebar,      {0} },
 	{ MODKEY,                       XK_w,                       killclient,     {0} },
